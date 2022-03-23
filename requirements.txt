@@ -1,0 +1,13 @@
+numpy
+torch==1.10.0
+torchaudio==0.10.0
+librosa
+pyworld
+pysptk
+matplotlib
+PyYAML
+SoundFile
+pytorch-lightning
+tqdm
+pypesq
+gradio

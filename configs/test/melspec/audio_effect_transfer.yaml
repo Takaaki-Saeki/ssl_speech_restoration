@@ -1,0 +1,28 @@
+general:
+  preprocessed_path: "./preprocessed/audio_effect_transfer"
+  output_path: "./output/melspec/audio_effect_transfer"
+  feature_type: "melspec"
+  source:
+    dataset_path: "./data/tono"
+    config_path: "./configs/test/melspec/ssl_tono.yaml"
+    ckpt_path: "./ckpts_tono/tono_melspec_multi_nopre_0217.ckpt"
+  target:
+    dataset_path: "./data/jvs_22k-low"
+    config_path: "./configs/test/melspec/pretrain_jvs.yaml"
+  use_gst: False
+
+preprocess:
+  sampling_rate: 22050
+  segment_length: -1
+  frame_shift: 256
+
+model: null
+
+train:
+  epoch: 100
+  batchsize: 8
+  multi_gpu_mode: False
+  num_workers: 4
+  learning_rate: 0.001
+  grad_clip_thresh: 1.0
+  logger_step: 1000

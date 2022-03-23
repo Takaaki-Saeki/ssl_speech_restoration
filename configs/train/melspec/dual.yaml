@@ -1,0 +1,13 @@
+general:
+  stage: "pretrain"
+  corpus_type: "multi-unseen"
+  source_path: "./data/jvs_22k"
+  aux_path: null
+  preprocessed_path: "./preprocessed/multi-task"
+preprocess:
+  n_train: 90
+  n_val: 5
+  n_test: 5
+  sampling_rate: 22050
+  segment_length: 2
+  

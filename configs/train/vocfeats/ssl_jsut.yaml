@@ -1,0 +1,56 @@
+general:
+  stage: "ssl"
+  corpus_type: "single" # (single, multi-seen, multi-unseen)
+  source_path: "./data/jsut_22k-low"
+  aux_path: "./data/jsut_22k"
+  preprocessed_path: "./preprocessed/jsut-low"
+  output_path: "./output/vocfeats/jsut-low"
+  test_wav_path: null
+  feature_type: "vocfeats"
+  hifigan_path: "./hifigan/hifigan_jvs_40d_600k"
+  power_norm: True
+  use_gst: False
+
+preprocess:
+  n_train: 4950
+  n_val: 25
+  n_test: 25
+  sampling_rate: 22050
+  frame_length: 1024
+  frame_shift: 256
+  fft_length: 1024
+  fmin: 0
+  fmax: 8000
+  n_mels: 80
+  cep_order: 40
+  comp_factor: 1.0
+  min_magnitude: 0.00001
+  bitrate: "16k"
+  f0_extractor: "harvest"
+  max_wav_value: 32768.0
+  segment_length: 2
+
+train:
+  batchsize: 4
+  epoch: 50
+  epoch_channel: 25
+  multi_gpu_mode: False
+  num_workers: 4
+  learning_rate: 0.001
+  alpha: 0.1
+  beta: 0.1
+  grad_clip_thresh: 1.0
+  logger_step: 1000
+  load_pretrained: True
+  pretrained_path: null
+  fix_channel: False
+  early_stopping: False
+  multi_scale_loss:
+    use_linear: True
+    gamma: 1.0
+  feature_loss:
+    type: "mae"
+
+dual:
+  enable: True
+  config_path: ./configs/train/vocfeats/dual.yaml
