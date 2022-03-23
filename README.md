@@ -24,12 +24,12 @@ You can choose `MelSpec` or `SourFilter` models with `--config_path` option.
 As shown in the paper, `MelSpec` model is of higher-quality.
 
 Firstly you need to split the data to train/val/test and dump them by the following command.
-```
+```shell
 python preprocess.py --config_path configs/train/melspec/ssl_jsut.yaml
 ```
 
 To perform self-supervised learning with dual learning, run the following command.
-```
+```shell
 python train.py \
     --config_path configs/train/melspec/ssl_jsut.yaml \
     --stage ssl-dual \
@@ -39,7 +39,7 @@ For other options, refer to `train.py`.
 
 ## Speech restoration
 To perform speech restoration of the test data, run the following command.
-```
+```shell
 python eval.py \
     --config_path configs/train/melspec/ssl_jsut.yaml \
     --ckpt_path < path to checkpoint > \
@@ -51,13 +51,13 @@ For other options, see `eval.py`.
 ## Audio effect transfer
 You can run a simple audio effect transfer demo using a model pretrained with real data.  
 Run the following command.
-```
+```shell
 python aet_demo.py
 ```
 
 Or you can customize the dataset or model.  
 You need to edit `audio_effect_transfer.yaml` and run the following command.
-```
+```shell
 python aet.py \
     --config_path configs/test/melspec/audio_effect_transfer.yaml \
     --stage ssl-dual \
@@ -71,7 +71,7 @@ See [here](./pretrained_models.md).
 
 ## Reproducing results
 You can generate simulated low-quality data as in the paper with the following command.
-```
+```shell
 python simulated_data.py \
     --in_dir < input_directory (e.g., path to jsut_22k) > \
     --output_dir <output_directory (e.g., path to jsut_22k-low) > \
@@ -80,7 +80,7 @@ python simulated_data.py \
 ```
 
 Then download the pretrained model correspond to the deg_type and run the following command.
-```
+```shell
 python eval.py \
     --config_path configs/train/melspec/ssl_jsut.yaml \
     --ckpt_path < path to checkpoint > \
@@ -89,7 +89,7 @@ python eval.py \
 ```
 
 ## Citation
-```
+```bib
 @article{saeki22selfremaster,
   title={{SelfRemaster}: {S}elf-Supervised Speech Restoration with Analysis-by-Synthesis Approach Using Channel Modeling},
   author={T. Saeki and S. Takamichi and T. Nakamura and N. Tanji and H. Saruwatari},
