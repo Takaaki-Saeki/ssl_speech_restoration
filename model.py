@@ -15,6 +15,7 @@ class EncoderModule(nn.Module):
         config (dict): config
         use_channel (bool): output channel feature or not
     """
+
     def __init__(self, config, use_channel=False):
         super().__init__()
 
@@ -128,7 +129,7 @@ class EncoderModule(nn.Module):
     def forward(self, x):
         """
         Forward
-        
+
         Args:
             mel spectrogram: (batch, 1, time, freq)
 
@@ -176,6 +177,7 @@ class ChannelModule(nn.Module):
     Args:
         config (dict): config
     """
+
     def __init__(self, config):
         super().__init__()
 
@@ -327,6 +329,7 @@ class ChannelFeatureModule(nn.Module):
     Args:
         config (dict): config
     """
+
     def __init__(self, config):
         super().__init__()
         self.conv_blocks_in = ConvBlockRes2D(
@@ -365,7 +368,7 @@ class ChannelFeatureModule(nn.Module):
 
         Args:
             output of analysis module: (batch, 256, time, freq)
-        
+
         Return:
             channel feature: (batch, feature_dim)
         """
@@ -654,6 +657,7 @@ class MultiScaleSpectralLoss(nn.Module):
     Args:
         config (dict): config
     """
+
     def __init__(self, config):
         super().__init__()
         try:
@@ -681,7 +685,7 @@ class MultiScaleSpectralLoss(nn.Module):
         Args:
             wav_out: output of channel module (batch, time)
             wav_target: input degraded waveform (batch, time)
-        
+
         Return:
             loss
         """
@@ -784,6 +788,7 @@ class MultiHeadAttention(nn.Module):
     https://github.com/KinglittleQ/GST-Tacotron
 
     """
+
     def __init__(self, query_dim, key_dim, num_units, num_heads):
         super().__init__()
         self.num_units = num_units
@@ -805,7 +810,7 @@ class MultiHeadAttention(nn.Module):
         Args:
             query: (batch, T_q, query_dim)
             key: (batch, T_k, key_dim)
-        
+
         Return:
             out: (N, T_q, num_units)
         """

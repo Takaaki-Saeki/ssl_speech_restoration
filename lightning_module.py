@@ -24,6 +24,7 @@ class PretrainLightningModule(pl.LightningModule):
     Supervised pretraining for low-resource settings.
     This module provides supervised pretraining for the analysis and channel modules.
     """
+
     def __init__(self, config):
         super().__init__()
         self.save_hyperparameters()
@@ -446,6 +447,7 @@ class SSLStepLightningModule(SSLBaseModule):
     This module provises step-wise learning, which only trains the channel module at early epochs
     and then only train the analysis module ar later epochs to stabilize the traininig.
     """
+
     def __init__(self, config):
         super().__init__(config)
         if config["train"]["fix_channel"]:
@@ -616,6 +618,7 @@ class SSLDualLightningModule(SSLBaseModule):
     In addition to the basic training framework, we introduce a training task that
     propagates information in the reverse direction.
     """
+
     def __init__(self, config):
         super().__init__(config)
         if config["train"]["fix_channel"]:
