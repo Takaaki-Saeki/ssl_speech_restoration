@@ -4,9 +4,7 @@ import pathlib
 import yaml
 
 from pytorch_lightning import Trainer
-from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers.csv_logs import CSVLogger
-from pytorch_lightning.loggers import TensorBoardLogger
 
 from dataset import DataModule
 from lightning_module import (
