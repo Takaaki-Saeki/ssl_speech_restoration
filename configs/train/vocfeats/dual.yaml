@@ -3,7 +3,7 @@ general:
   corpus_type: "multi-unseen"
   source_path: "./data/jvs_22k"
   aux_path: null
-  preprocessed_path: "./preprocessed/multi-task"
+  preprocessed_path: "./preprocessed/dual"
 preprocess:
   n_train: 90
   n_val: 5

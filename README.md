@@ -7,8 +7,8 @@ Official implementation of SelfRemaster: Self-Supervised Speech Restoration with
 - Audio effect transfer demo with Gradio: `python aet_demo.py`
 
 ## Setup
-1. Clone this repository: `git clone https://github.com/Takaaki-Saeki/source_filter_channel_remaster.git`
-2. CD into this repository: `cd source_filter_channel_remaster`
+1. Clone this repository: `git clone https://github.com/Takaaki-Saeki/ssl_speech_restoration.git`
+2. CD into this repository: `cd ssl_speech_restoration`
 3. Install python packages and download some pretrained models: `./setup.sh`
 
 ## Getting started
@@ -25,13 +25,13 @@ As shown in the paper, `MelSpec` model is of higher-quality.
 
 Firstly you need to split the data to train/val/test and dump them by the following command.
 ```shell
-python preprocess.py --config_path configs/train/melspec/ssl_jsut.yaml
+python preprocess.py --config_path configs/train/${feature}/ssl_jsut.yaml
 ```
 
 To perform self-supervised learning with dual learning, run the following command.
 ```shell
 python train.py \
-    --config_path configs/train/melspec/ssl_jsut.yaml \
+    --config_path configs/train/${feature}/ssl_jsut.yaml \
     --stage ssl-dual \
     --run_name ssl_melspec_dual
 ```
@@ -41,7 +41,7 @@ For other options, refer to `train.py`.
 To perform speech restoration of the test data, run the following command.
 ```shell
 python eval.py \
-    --config_path configs/train/melspec/ssl_jsut.yaml \
+    --config_path configs/train/${feature}/ssl_jsut.yaml \
     --ckpt_path ${path to checkpoint} \
     --stage ssl-dual \
     --run_name ssl_melspec_dual
@@ -82,7 +82,7 @@ python simulated_data.py \
 Then download the pretrained model correspond to the deg_type and run the following command.
 ```shell
 python eval.py \
-    --config_path configs/train/melspec/ssl_jsut.yaml \
+    --config_path configs/train/${feature}/ssl_jsut.yaml \
     --ckpt_path ${path to checkpoint} \
     --stage ssl-dual \
     --run_name ssl_melspec_dual

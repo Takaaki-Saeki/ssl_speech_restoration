@@ -196,9 +196,10 @@ class Dataset(torch.utils.data.Dataset):
             if "dual" in self.config:
                 if self.config["dual"]["enable"]:
                     d_batch["wavstask"] = torch.from_numpy(self.d_out["wavstask"][idx])
-                    d_batch["wavstask"] = self.get_segment(
-                        d_batch["wavstask"], self.segment_length
-                    )
+                    if self.segment_length > 0:
+                        d_batch["wavstask"] = self.get_segment(
+                            d_batch["wavstask"], self.segment_length
+                        )
                     d_batch["wavstask"] = self.normalize_waveform(
                         d_batch["wavstask"], db=-3
                     )

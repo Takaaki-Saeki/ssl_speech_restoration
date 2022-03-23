@@ -34,7 +34,7 @@ def preprocess(config):
 
     os.makedirs(preprocessed_dir, exist_ok=True)
 
-    sourcepath = pathlib.Path(config["general"]["source_path"])
+    sourcepath = pathlib.Path(config["general"]["source_path"]).resolve()
 
     if config["general"]["corpus_type"] == "single":
         fulllist = list(sourcepath.glob("*.wav"))
@@ -148,5 +148,5 @@ if __name__ == "__main__":
             task_config["general"]["preprocessed_path"] = task_preprocessed_dir
             if args.source_path_task != None:
                 task_config["general"]["source_path"] = args.source_path_task
-            print("Performing preprocessing for multi-task learning ...")
+            print("Performing preprocessing for dual learning ...")
             preprocess(task_config)

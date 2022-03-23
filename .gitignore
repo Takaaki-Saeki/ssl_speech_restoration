@@ -109,15 +109,9 @@ __pycache__
 
 # data, checkpoint, and models
 output*/
+data/
 *.ckpt
-log*
 preprocessed*/
-pretrained/
-hifigan/discriminator*
 hifigan/hifigan*
-dataset/**/
 ckpts_*/
-tmp.sh
-subjective_evaluation/
 *.pth
-selfremaster_aet_demo/
