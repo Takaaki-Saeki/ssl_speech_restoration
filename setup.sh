@@ -13,13 +13,13 @@ echo "Downloading pretrained model for audio effect transfer ..."
 curl -OL https://sarulab.sakura.ne.jp/saeki/selfremaster/pretrained/tono_aet_melspec.ckpt
 mv tono_aet_melspec.ckpt aet_sample/
 
-if [ -n "$1" ]; then
-  exit 0
-fi
-
 echo "Downloading pretrained HiFi-GAN for MelSpec ..."
 download_gdrive 10OJ2iznutxzp8MEIS6lBVaIS_g5c_70V hifigan_melspec_universal
 mv hifigan_melspec_universal hifigan/
+
+if [ -n "$1" ]; then
+  exit 0
+fi
 
 echo "Downloading pretrained HiFi-GAN for SourceFilter ..."
 curl -OL https://sarulab.sakura.ne.jp/saeki/selfremaster/pretrained/hifigan_jvs_40d_600k
