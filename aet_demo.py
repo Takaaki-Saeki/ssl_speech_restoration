@@ -39,6 +39,8 @@ def calc_spectrogram(wav, config):
 
 
 def transfer(audio):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     wp_src = pathlib.Path("aet_sample/src.wav")
     wav_src, sr = torchaudio.load(wp_src)
     sr_inp, wav_tar = audio
@@ -60,16 +62,16 @@ def transfer(audio):
         config=config,
     )
 
-    encoder_src = src_model.encoder
-    channelfeats_src = src_model.channelfeats
-    channel_src = src_model.channel
+    encoder_src = src_model.encoder.to(device)
+    channelfeats_src = src_model.channelfeats.to(device)
+    channel_src = src_model.channel.to(device)
 
     _, enc_hidden_src = encoder_src(
-        melspec_src.unsqueeze(0).unsqueeze(1).transpose(2, 3)
+        melspec_src.unsqueeze(0).unsqueeze(1).transpose(2, 3).to(device)
     )
     chfeats_src = channelfeats_src(enc_hidden_src)
     wav_transfer = channel_src(wav_tar.unsqueeze(0), chfeats_src)
-    wav_transfer = wav_transfer.detach().numpy()[0, :]
+    wav_transfer = wav_transfer.cpu().detach().numpy()[0, :]
     return sr, wav_transfer
 
 
