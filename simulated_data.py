@@ -7,6 +7,7 @@ import torch
 import torchaudio
 import numpy as np
 
+
 def get_arg():
     parser = argparse.ArgumentParser()
     parser.add_argument("--in_dir", required=True, type=pathlib.Path)
@@ -22,6 +23,7 @@ def get_arg():
     )
     args = parser.parse_args()
     return args
+
 
 def lowpass(args):
     in_dir = args.in_dir
@@ -54,6 +56,7 @@ def lowpass(args):
             sf.write(out_dir / wp.name, wav_out, sr)
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
+
 
 def clipping(args):
     in_dir = args.in_dir
@@ -88,6 +91,7 @@ def clipping(args):
             sf.write(out_dir / wp.name, wav_out, sr)
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
+
 
 def mulaw(args):
     in_dir = args.in_dir
@@ -140,6 +144,7 @@ def mulaw(args):
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
 
+
 def overdrive(args):
     in_dir = args.in_dir
     out_dir = args.out_dir
@@ -172,13 +177,15 @@ def overdrive(args):
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
 
+
 def wav_norm(wav_processed, sr):
     wav_out, _ = torchaudio.sox_effects.apply_effects_tensor(
         wav_processed,
         sr,
         [["norm", "{}".format(-3)]],
     )
-    return wav_out    
+    return wav_out
+
 
 if __name__ == "__main__":
     args = get_arg()

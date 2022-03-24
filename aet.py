@@ -18,6 +18,15 @@ import os
 import tqdm
 
 
+def get_arg():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--stage", required=True, type=str)
+    parser.add_argument("--config_path", required=True, type=pathlib.Path)
+    parser.add_argument("--exist_src_aux", action="store_true")
+    parser.add_argument("--run_name", required=True, type=str)
+    return parser.parse_args()
+
+
 class AETDataset(Dataset):
     def __init__(self, filetxt, src_config, tar_config):
         self.config = src_config
@@ -159,99 +168,6 @@ class AETModule(torch.nn.Module):
         return wavschmatch_tar
 
 
-def get_arg():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--stage", required=True, type=str)
-    parser.add_argument("--config_path", required=True, type=pathlib.Path)
-    parser.add_argument("--exist_src_aux", action="store_true")
-    parser.add_argument("--run_name", required=True, type=str)
-    return parser.parse_args()
-
-
-def main(args, chmatch_config, device):
-    src_config = yaml.load(
-        open(chmatch_config["general"]["source"]["config_path"], "r"),
-        Loader=yaml.FullLoader,
-    )
-    tar_config = yaml.load(
-        open(chmatch_config["general"]["target"]["config_path"], "r"),
-        Loader=yaml.FullLoader,
-    )
-    output_path = pathlib.Path(chmatch_config["general"]["output_path"]) / args.run_name
-    dataset = AETDataset("test.txt", src_config, tar_config)
-    loader = DataLoader(dataset, batch_size=1, shuffle=False)
-    chmatch_module = AETModule(args, chmatch_config, src_config, tar_config).to(device)
-
-    if args.exist_src_aux:
-        char_vector = calc_deg_charactaristics(chmatch_config)
-
-    for idx, batch in enumerate(tqdm.tqdm(loader)):
-        melspecs_src = batch["melspecs_src"].to(device)
-        wavsdeg_src = batch["wavs_src"].to(device)
-        wavsaux_tar = batch["wavsaux_tar"].to(device)
-        if args.exist_src_aux:
-            wavsdegbaseline_tar = calc_deg_baseline(
-                batch["wavsaux_tar"], char_vector, tar_config
-            )
-            wavsdegbaseline_tar = normalize_waveform(wavsdegbaseline_tar, tar_config)
-            wavsdeg_tar = batch["wavs_tar"].to(device)
-        wavsmatch_tar = normalize_waveform(
-            chmatch_module(melspecs_src, wavsaux_tar).cpu().detach(), tar_config
-        )
-        torchaudio.save(
-            output_path / "test_wavs" / "{}-src_wavsdeg.wav".format(idx),
-            wavsdeg_src.cpu(),
-            src_config["preprocess"]["sampling_rate"],
-        )
-        torchaudio.save(
-            output_path / "test_wavs" / "{}-tar_wavsaux.wav".format(idx),
-            wavsaux_tar.cpu(),
-            tar_config["preprocess"]["sampling_rate"],
-        )
-        if args.exist_src_aux:
-            torchaudio.save(
-                output_path / "test_wavs" / "{}-tar_wavsdegbaseline.wav".format(idx),
-                wavsdegbaseline_tar.cpu(),
-                tar_config["preprocess"]["sampling_rate"],
-            )
-            torchaudio.save(
-                output_path / "test_wavs" / "{}-tar_wavsdeg.wav".format(idx),
-                wavsdeg_tar.cpu(),
-                tar_config["preprocess"]["sampling_rate"],
-            )
-        torchaudio.save(
-            output_path / "test_wavs" / "{}-tar_wavsmatch.wav".format(idx),
-            wavsmatch_tar.cpu(),
-            tar_config["preprocess"]["sampling_rate"],
-        )
-        plot_and_save_mels(
-            wavsdeg_src[0, ...].cpu().detach(),
-            output_path / "test_mels" / "{}-src_melsdeg.png".format(idx),
-            src_config,
-        )
-        plot_and_save_mels(
-            wavsaux_tar[0, ...].cpu().detach(),
-            output_path / "test_mels" / "{}-tar_melsaux.png".format(idx),
-            tar_config,
-        )
-        if args.exist_src_aux:
-            plot_and_save_mels(
-                wavsdegbaseline_tar[0, ...].cpu().detach(),
-                output_path / "test_mels" / "{}-tar_melsdegbaseline.png".format(idx),
-                tar_config,
-            )
-            plot_and_save_mels(
-                wavsdeg_tar[0, ...].cpu().detach(),
-                output_path / "test_mels" / "{}-tar_melsdeg.png".format(idx),
-                tar_config,
-            )
-        plot_and_save_mels(
-            wavsmatch_tar[0, ...].cpu().detach(),
-            output_path / "test_mels" / "{}-tar_melsmatch.png".format(idx),
-            tar_config,
-        )
-
-
 def calc_deg_baseline(wav, char_vector, tar_config):
     wav = wav[0, ...].cpu().detach().numpy()
     spec = librosa.stft(
@@ -354,6 +270,90 @@ def normalize_waveform(wav, tar_config, db=-3):
         [["norm", "{}".format(db)]],
     )
     return wav
+
+
+def main(args, chmatch_config, device):
+    src_config = yaml.load(
+        open(chmatch_config["general"]["source"]["config_path"], "r"),
+        Loader=yaml.FullLoader,
+    )
+    tar_config = yaml.load(
+        open(chmatch_config["general"]["target"]["config_path"], "r"),
+        Loader=yaml.FullLoader,
+    )
+    output_path = pathlib.Path(chmatch_config["general"]["output_path"]) / args.run_name
+    dataset = AETDataset("test.txt", src_config, tar_config)
+    loader = DataLoader(dataset, batch_size=1, shuffle=False)
+    chmatch_module = AETModule(args, chmatch_config, src_config, tar_config).to(device)
+
+    if args.exist_src_aux:
+        char_vector = calc_deg_charactaristics(chmatch_config)
+
+    for idx, batch in enumerate(tqdm.tqdm(loader)):
+        melspecs_src = batch["melspecs_src"].to(device)
+        wavsdeg_src = batch["wavs_src"].to(device)
+        wavsaux_tar = batch["wavsaux_tar"].to(device)
+        if args.exist_src_aux:
+            wavsdegbaseline_tar = calc_deg_baseline(
+                batch["wavsaux_tar"], char_vector, tar_config
+            )
+            wavsdegbaseline_tar = normalize_waveform(wavsdegbaseline_tar, tar_config)
+            wavsdeg_tar = batch["wavs_tar"].to(device)
+        wavsmatch_tar = normalize_waveform(
+            chmatch_module(melspecs_src, wavsaux_tar).cpu().detach(), tar_config
+        )
+        torchaudio.save(
+            output_path / "test_wavs" / "{}-src_wavsdeg.wav".format(idx),
+            wavsdeg_src.cpu(),
+            src_config["preprocess"]["sampling_rate"],
+        )
+        torchaudio.save(
+            output_path / "test_wavs" / "{}-tar_wavsaux.wav".format(idx),
+            wavsaux_tar.cpu(),
+            tar_config["preprocess"]["sampling_rate"],
+        )
+        if args.exist_src_aux:
+            torchaudio.save(
+                output_path / "test_wavs" / "{}-tar_wavsdegbaseline.wav".format(idx),
+                wavsdegbaseline_tar.cpu(),
+                tar_config["preprocess"]["sampling_rate"],
+            )
+            torchaudio.save(
+                output_path / "test_wavs" / "{}-tar_wavsdeg.wav".format(idx),
+                wavsdeg_tar.cpu(),
+                tar_config["preprocess"]["sampling_rate"],
+            )
+        torchaudio.save(
+            output_path / "test_wavs" / "{}-tar_wavsmatch.wav".format(idx),
+            wavsmatch_tar.cpu(),
+            tar_config["preprocess"]["sampling_rate"],
+        )
+        plot_and_save_mels(
+            wavsdeg_src[0, ...].cpu().detach(),
+            output_path / "test_mels" / "{}-src_melsdeg.png".format(idx),
+            src_config,
+        )
+        plot_and_save_mels(
+            wavsaux_tar[0, ...].cpu().detach(),
+            output_path / "test_mels" / "{}-tar_melsaux.png".format(idx),
+            tar_config,
+        )
+        if args.exist_src_aux:
+            plot_and_save_mels(
+                wavsdegbaseline_tar[0, ...].cpu().detach(),
+                output_path / "test_mels" / "{}-tar_melsdegbaseline.png".format(idx),
+                tar_config,
+            )
+            plot_and_save_mels(
+                wavsdeg_tar[0, ...].cpu().detach(),
+                output_path / "test_mels" / "{}-tar_melsdeg.png".format(idx),
+                tar_config,
+            )
+        plot_and_save_mels(
+            wavsmatch_tar[0, ...].cpu().detach(),
+            output_path / "test_mels" / "{}-tar_melsmatch.png".format(idx),
+            tar_config,
+        )
 
 
 if __name__ == "__main__":
