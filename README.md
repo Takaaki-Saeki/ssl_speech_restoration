@@ -4,7 +4,7 @@ Official implementation of SelfRemaster: Self-Supervised Speech Restoration with
 
 ## Demo
 - [Audio samples](https://takaaki-saeki.github.io/ssl_remaster_demo/)
-- Audio effect transfer with [Gradio + HuggingFace 🤗](https://huggingface.co/spaces/saefro991/aet_demo)
+- Audio effect transfer with [Gradio + HuggingFace Spaces 🤗](https://huggingface.co/spaces/saefro991/aet_demo)
 
 ## Setup
 1. Clone this repository: `git clone https://github.com/Takaaki-Saeki/ssl_speech_restoration.git`
