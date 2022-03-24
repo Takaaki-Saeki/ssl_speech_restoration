@@ -2,6 +2,10 @@
 
 ### Pretrained HiFi-GAN with SourceFilter features
 
+HiFi-GAN-based synthethis modules to synthesize waveform from source-filter vocoder features trained on JVS or VCTK.  
+Scripts for training are available in [another repo](https://github.com/Takaaki-Saeki/hifi-gan/tree/voc_feat).  
+`hifigan_jvs_40d_600k` is used in the default configuration.
+
 |Name|Feature|Dataset|Iteration|Link|
 |------|---|---|---|---|
 |hifigan_jvs_40d_600k|40-D Melcep. + F0 (WORLD)|JVS|600K|[Download](https://drive.google.com/file/d/1lkvtAJ3xTny5qmxyVcNPWQRB9MjdPlAY/view?usp=sharing)|
@@ -11,6 +15,8 @@
 |hifigan_vctk-jvs_60d_400k|60-D Melcep. + F0 (WORLD)|JVS+VCTK|400K|[Download](https://drive.google.com/file/d/1kBJoTGgVSpGRkuEccZyJYiTLIim9kc48/view?usp=sharing)|
 
 ### SSL pretarined models for speech restoration
+
+Speech restoration models trained on simulated data.
 
 |Name|Dataset|Distortion|Feature|Link|
 |------|---|---|---|---|
@@ -25,7 +31,13 @@
 
 ### Supervisedly pretrained models
 
-|Name|Feature|Analysis module type|Dataset|Link|
+Supervisedly pretrained model to apply our method to low-resource settings.  
+There are two type of the analysis module; `Normal` and `GST`.  
+`Normal` is to extract restored speech features and channel features simultaneously in the analysis module.  
+`GST` extracts channel features using a separated GST encoder.  
+We use the `Normal` method in our paper because we have confirmed that the Normal method is of slightly higher quality in our preliminary experiments.  
+
+|Name|Analysis module type|Feature|Dataset|Link|
 |------|---|---|---|---|
 |pretrain_melspec_normal.ckpt|Normal|MelSpec|JVS|[Download](https://drive.google.com/file/d/11bqYcyF0OqKogr4pDr7qeS7QysTbeOWd/view?usp=sharing)|
 |pretrain_melspec_gst.ckpt|GST|MelSpec|JVS|[Download](https://drive.google.com/file/d/1vX9cTUnBFxjMfx_IP_RDtzEzi0_7z8ks/view?usp=sharing)|
@@ -33,6 +45,10 @@
 |pretrain_vocfeats_gst.ckpt|GST|SourceFilter|JVS|[Download](https://drive.google.com/file/d/1Qehs1sU0GSPX5VWqJs5tFaoxtzfPy11j/view?usp=sharing)|
 
 ### SSL pretarined models for audio effect transfer
+
+The following model was trained on the real data described in the paper and is intended to be used for audio effect transfer.  
+This operation enables to give effects to arbitrary speech data as if it were an old recording.  
+Note that the following model uses `MelSpec` features.
 
 |Name|Distortion|Link|
 |------|---|---|
