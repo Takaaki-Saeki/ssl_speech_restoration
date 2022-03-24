@@ -7,14 +7,19 @@ function download_gdrive () {
 }
 echo "Installing packages ..."
 pip install -r requirements.txt
-download_gdrive 1lkvtAJ3xTny5qmxyVcNPWQRB9MjdPlAY hifigan_jvs_40d_600k
 
-echo "Downloading pretrained models ..."
-mv hifigan_jvs_40d_600k hifigan/
+echo "Downloading pretrained HiFi-GAN for MelSpec ..."
 download_gdrive 10OJ2iznutxzp8MEIS6lBVaIS_g5c_70V hifigan_melspec_universal
 mv hifigan_melspec_universal hifigan/
-download_gdrive 1xJzUNqwwf145YuSFQRZ4KjwxGtcL7rol tono_aet_melspec.ckpt
+
+echo "Downloading pretrained HiFi-GAN for SourceFilter ..."
+curl -OL https://sarulab.sakura.ne.jp/saeki/selfremaster/pretrained/hifigan_jvs_40d_600k
+mv hifigan_jvs_40d_600k hifigan/
+
+echo "Downloading pretrained model for audio effect transfer ..."
+curl -OL https://sarulab.sakura.ne.jp/saeki/selfremaster/pretrained/tono_aet_melspec.ckpt
 mv tono_aet_melspec.ckpt aet_sample/
+
 mkdir -p data
 
 echo "Done!"

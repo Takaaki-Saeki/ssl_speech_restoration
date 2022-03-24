@@ -4,7 +4,7 @@ Official implementation of SelfRemaster: Self-Supervised Speech Restoration with
 
 ## Demo
 - Audio samples: https://takaaki-saeki.github.io/ssl_remaster_demo/
-- Audio effect transfer demo with Gradio: `python aet_demo.py`
+- Audio effect transfer demo: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1d5jqjatL1pnc-ImgtI-hiRkx11kBq15k?usp=sharing)
 
 ## Setup
 1. Clone this repository: `git clone https://github.com/Takaaki-Saeki/ssl_speech_restoration.git`
