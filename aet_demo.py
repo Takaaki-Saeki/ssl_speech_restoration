@@ -83,4 +83,4 @@ if __name__ == "__main__":
         description="Add channel feature of Japanese old audio recording to any high-quality audio",
     )
 
-    iface.launch()
+    iface.launch(share=True)
