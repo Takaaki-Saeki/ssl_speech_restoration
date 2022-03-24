@@ -7,7 +7,6 @@ import torch
 import torchaudio
 import numpy as np
 
-
 def get_arg():
     parser = argparse.ArgumentParser()
     parser.add_argument("--in_dir", required=True, type=pathlib.Path)
@@ -23,7 +22,6 @@ def get_arg():
     )
     args = parser.parse_args()
     return args
-
 
 def lowpass(args):
     in_dir = args.in_dir
@@ -50,17 +48,12 @@ def lowpass(args):
         wav_processed = torchaudio.functional.lowpass_biquad(
             wav, sample_rate=sr, cutoff_freq=1000, Q=1.0
         )
-        wav_out, _ = torchaudio.sox_effects.apply_effects_tensor(
-            wav_processed,
-            sr,
-            [["norm", "{}".format(-3)]],
-        )
+        wav_out = wav_norm(wav_processed, sr)
         wav_out = wav_out.squeeze(0).numpy()
         if data_type == "single":
             sf.write(out_dir / wp.name, wav_out, sr)
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
-
 
 def clipping(args):
     in_dir = args.in_dir
@@ -89,17 +82,12 @@ def clipping(args):
         amp = eta * np.max(wav)
         wav_processed = np.maximum(np.minimum(wav, amp), -amp)
         wav_processed = torch.from_numpy(wav_processed.astype(np.float32)).unsqueeze(0)
-        wav_out, _ = torchaudio.sox_effects.apply_effects_tensor(
-            wav_processed,
-            sr,
-            [["norm", "{}".format(-3)]],
-        )
+        wav_out = wav_norm(wav_processed, sr)
         wav_out = wav_out.squeeze(0).numpy()
         if data_type == "single":
             sf.write(out_dir / wp.name, wav_out, sr)
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
-
 
 def mulaw(args):
     in_dir = args.in_dir
@@ -145,17 +133,12 @@ def mulaw(args):
             dtype=torch.float32,
         )
         wav_processed = upsampler(downsampler(wav_quantized))
-        wav_out, _ = torchaudio.sox_effects.apply_effects_tensor(
-            wav_processed.unsqueeze(0),
-            sr,
-            [["norm", "{}".format(-3)]],
-        )
+        wav_out = wav_norm(wav_processed, sr)
         wav_out = wav_out.squeeze(0).numpy()
         if data_type == "single":
             sf.write(out_dir / wp.name, wav_out, sr)
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
-
 
 def overdrive(args):
     in_dir = args.in_dir
@@ -182,17 +165,20 @@ def overdrive(args):
         wav_processed = torchaudio.functional.overdrive(
             torch.from_numpy(wav.astype(np.float32)).unsqueeze(0), gain=40, colour=20
         )
-        wav_out, _ = torchaudio.sox_effects.apply_effects_tensor(
-            wav_processed,
-            sr,
-            [["norm", "{}".format(-3)]],
-        )
+        wav_out = wav_norm(wav_processed, sr)
         wav_out = wav_out.squeeze(0).numpy()
         if data_type == "single":
             sf.write(out_dir / wp.name, wav_out, sr)
         else:
             sf.write(out_dir / wp.parent.name / wp.name, wav_out, sr)
 
+def wav_norm(wav_processed, sr):
+    wav_out, _ = torchaudio.sox_effects.apply_effects_tensor(
+        wav_processed,
+        sr,
+        [["norm", "{}".format(-3)]],
+    )
+    return wav_out    
 
 if __name__ == "__main__":
     args = get_arg()
