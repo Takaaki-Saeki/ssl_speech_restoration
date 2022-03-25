@@ -1,6 +1,6 @@
 # SelfRemaster: Self-Supervised Speech Restoration
 
-Official implementation of SelfRemaster: Self-Supervised Speech Restoration with Analysis-by-Synthesis Approach Using Channel Modeling
+Official implementation of [SelfRemaster: Self-Supervised Speech Restoration with Analysis-by-Synthesis Approach Using Channel Modeling](https://arxiv.org/abs/2203.12937)
 
 ## Demo
 - [Audio samples](https://takaaki-saeki.github.io/ssl_remaster_demo/)
@@ -94,7 +94,7 @@ python eval.py \
 @article{saeki22selfremaster,
   title={{SelfRemaster}: {S}elf-Supervised Speech Restoration with Analysis-by-Synthesis Approach Using Channel Modeling},
   author={T. Saeki and S. Takamichi and T. Nakamura and N. Tanji and H. Saruwatari},
-  journal={arXiv preprint arXiv:20xx.xxxxx},
+  journal={arXiv preprint arXiv:2203.12937},
   year={2022}
 }
 ```
