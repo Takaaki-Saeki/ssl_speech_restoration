@@ -88,7 +88,6 @@ python eval.py \
     --run_name ssl_melspec_dual
 ```
 
-<!-- 
 ## Citation
 ```bib
 @article{saeki22selfremaster,
@@ -98,7 +97,6 @@ python eval.py \
   year={2022}
 }
 ```
--->
 
 ## Reference
 - [HiFi-GAN: Generative Adversarial Networks for Efficient and High Fidelity Speech Synthesis](https://arxiv.org/abs/2010.05646)
