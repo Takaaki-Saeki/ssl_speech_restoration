@@ -41,7 +41,7 @@ For other options, refer to `train.py`.
 To perform speech restoration of the test data, run the following command.
 ```shell
 python eval.py \
-    --config_path configs/train/${feature}/ssl_jsut.yaml \
+    --config_path configs/test/${feature}/ssl_jsut.yaml \
     --ckpt_path ${path to checkpoint} \
     --stage ssl-dual \
     --run_name ssl_melspec_dual
