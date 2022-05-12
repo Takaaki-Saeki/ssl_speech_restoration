@@ -152,15 +152,19 @@ class Dataset(torch.utils.data.Dataset):
 
         if self.d_out["wavs"].size > 0:
             d_batch["wavs"] = torch.from_numpy(self.d_out["wavs"][idx])
-            if self.segment_length > 0:
-                d_batch["wavs"] = self.get_segment(d_batch["wavs"], self.segment_length)
 
         if self.d_out["wavsaux"].size > 0:
             d_batch["wavsaux"] = torch.from_numpy(self.d_out["wavsaux"][idx])
-            if self.segment_length > 0:
-                d_batch["wavsaux"] = self.get_segment(
-                    d_batch["wavsaux"], self.segment_length
+        
+        if (self.d_out["wavs"].size > 0) & (self.segment_length > 0):
+            if self.d_out["wavsaux"].size > 0:
+                d_batch["wavs"], d_batch["wavsaux"] = self.get_segment(
+                    d_batch["wavs"],
+                    self.segment_length,
+                    d_batch["wavsaux"]
                 )
+            else:
+                d_batch["wavs"] = self.get_segment(d_batch["wavs"], self.segment_length)
 
         if self.config["general"]["stage"] == "pretrain":
             if self.config["train"]["augment"]:
@@ -334,12 +338,19 @@ class Dataset(torch.utils.data.Dataset):
         )
         return wav.squeeze(0)
 
-    def get_segment(self, wav, segment_length):
+    def get_segment(self, wav, segment_length, wavaux=None):
         seg_size = self.config["preprocess"]["sampling_rate"] * segment_length
         if len(wav) >= seg_size:
             max_wav_start = len(wav) - seg_size
             wav_start = random.randint(0, max_wav_start)
             wav = wav[wav_start : wav_start + seg_size]
+            if wavaux != None:
+                wavaux = wavaux[wav_start : wav_start + seg_size]
         else:
             wav = torch.nn.functional.pad(wav, (0, seg_size - len(wav)), "constant")
-        return wav
+            if wavaux != None:
+                wavaux = torch.nn.functional.pad(wavaux, (0, seg_size - len(wavaux)), "constant")
+        if wavaux != None:
+            return wav, wavaux
+        else:
+            return wav
