@@ -15,7 +15,9 @@ Official implementation of [SelfRemaster: Self-Supervised Speech Restoration wit
 - If you use default Japanese corpora
     - Download [JSUT Basic5000](https://sites.google.com/site/shinnosuketakamichi/publication/jsut) and [JVS Corpus](https://sites.google.com/site/shinnosuketakamichi/research-topics/jvs_corpus)
     - Downsample them to 22.05 kHz and Place them under `data/` as `jsut_22k` and `jvs_22k`
-    - Place simulated low-quality data under `./data` as `jsut_22k-low` and `jvs_22k-low`
+        - JSUT is a singlea-speaker dataset and requires the structure as `jsut_22k/*.wav`
+        - JVS parallel100 includes 100-speaker data and requires the structure as `jvs_22k/${spkr_name}/*.wav`
+    - Place simulated low-quality data under `./data` as `jsut_22k-low`
 - Or you can use arbitrary datasets by modifying config files
 
 ## Training
