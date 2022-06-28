@@ -1,6 +1,6 @@
 # SelfRemaster: Self-Supervised Speech Restoration
 
-Official implementation of [SelfRemaster: Self-Supervised Speech Restoration with Analysis-by-Synthesis Approach Using Channel Modeling](https://arxiv.org/abs/2203.12937)
+Official implementation of [SelfRemaster: Self-Supervised Speech Restoration with Analysis-by-Synthesis Approach Using Channel Modeling](https://arxiv.org/abs/2203.12937) (to appear in *INTERSPEECH 2022*).
 
 ## Demo
 - [Audio samples](https://takaaki-saeki.github.io/ssl_remaster_demo/)
