@@ -39,6 +39,10 @@ python train.py \
 ```
 For other options, refer to `train.py`.
 
+Note that you might need to tune some parameters for your own datasets.  
+In our experiences, `learning_rate` and `beta` are cruicial parameters.  
+For example, if the trianing is unstable, consider making `beta` smaller (e.b., `beta: 0.001`).
+
 ## Speech restoration
 To perform speech restoration of the test data, run the following command.
 ```shell
