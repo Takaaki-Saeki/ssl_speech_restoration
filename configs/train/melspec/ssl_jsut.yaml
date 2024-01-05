@@ -36,7 +36,7 @@ train:
   num_workers: 4
   learning_rate: 0.001
   alpha: 0.1
-  beta: 0.1
+  beta: 0.001
   grad_clip_thresh: 1.0
   logger_step: 1000
   load_pretrained: True

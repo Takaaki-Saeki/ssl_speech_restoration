@@ -2,6 +2,11 @@
 
 Official implementation of [SelfRemaster: Self-Supervised Speech Restoration with Analysis-by-Synthesis Approach Using Channel Modeling](https://arxiv.org/abs/2203.12937) (to appear in *INTERSPEECH 2022*).
 
+## Note
+This repo contains an older version of the code, but is kept for compatibility.
+
+**The latest version is available [here](https://github.com/Takaaki-Saeki/ssl_speech_restoration_v2/tree/master)**.
+
 ## Demo
 - [Audio samples](https://takaaki-saeki.github.io/ssl_remaster_demo/)
 - Audio effect transfer with [Gradio + HuggingFace Spaces 🤗](https://huggingface.co/spaces/saefro991/aet_demo)
