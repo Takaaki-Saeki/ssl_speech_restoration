@@ -199,7 +199,8 @@ class Dataset(torch.utils.data.Dataset):
                     d_batch["melceps"] = self.calc_melcep(d_batch["wavsaux"])
             if "dual" in self.config:
                 if self.config["dual"]["enable"]:
-                    d_batch["wavstask"] = torch.from_numpy(self.d_out["wavstask"][idx])
+                    rand_idx = random.randint(0, len(self.d_out["wavstask"]) - 1)
+                    d_batch["wavstask"] = torch.from_numpy(self.d_out["wavstask"][rand_idx])
                     if self.segment_length > 0:
                         d_batch["wavstask"] = self.get_segment(
                             d_batch["wavstask"], self.segment_length
